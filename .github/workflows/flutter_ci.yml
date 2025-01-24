@@ -1,12 +1,10 @@
-name: Flutter CI
+name: Flutter Develop CI
 
 on:
   push:
     branches:
-      - master
+      - develop
   pull_request:
-    branches:
-      - master
 
 jobs:
   flutter_test:
@@ -27,7 +25,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: 3.27.1
+          flutter-version: 3.27.2
 
       - name: Checking Flutter Version
         run: flutter --version
@@ -40,9 +38,6 @@ jobs:
 
       - name: Test Package
         run: flutter packages pub publish --dry-run
-
-      - name: Publish Package
-        run: flutter packages pub publish
 
       - name: Set timestamp
         id: timestamp
@@ -57,9 +52,10 @@ jobs:
         run: |
           DATA=$(cat <<EOF
           {
+            "content": "<@749992025985777755>, <@1042669793481871361>, <@930099449307467786>", 
             "embeds": [
               {
-                "title": "패키지 배포 성공 :)",
+                "title": "CI 성공 :)",
                 "description": "** COMMIT MESSAGE **\n> [${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})\n",
                 "color": 46335,
                 "timestamp": "${{ env.TIMESTAMP }}",
@@ -107,9 +103,10 @@ jobs:
         run: |
           DATA=$(cat <<EOF
           {
+            "content": "<@749992025985777755>, <@1042669793481871361>, <@930099449307467786>", 
             "embeds": [
               {
-                "title": "패키지 배포 성공 :)",
+                "title": "CI 성공 :)",
                 "description": "** Pull Request **\n> [${{ github.event.pull_request.title }}](${{ github.event.pull_request.html_url }})\n",
                 "color": 46335,
                 "timestamp": "${{ env.TIMESTAMP }}",
@@ -156,9 +153,10 @@ jobs:
         run: |
           DATA=$(cat <<EOF
           {
+            "content": "<@749992025985777755>, <@1042669793481871361>, <@930099449307467786>", 
             "embeds": [
               {
-                "title": "패키지 배포 실패 :(",
+                "title": "CI 실패 :(",
                 "description": "** ${{
                   github.event_name == 'push' 
                   && 'COMMIT MESSAGE' || 'Pull Request' }} **\n> [${{ 
